@@ -5,9 +5,9 @@
     "nixpacks": {
       "src": ".",
       "packageJsonPath": "backend-package.json",
-      "installCommand": "npm install --legacy-peer-deps",
-      "buildCommand": "npm run build",
-      "startCommand": "npm run start"
+      "installCommand": "yarn install --frozen-lockfile || yarn install",
+      "buildCommand": "yarn build",
+      "startCommand": "yarn start"
     }
   },
   "deploy": {
