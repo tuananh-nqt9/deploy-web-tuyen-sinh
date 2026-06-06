@@ -35,7 +35,7 @@ const optionalAuth = (req: AuthenticatedRequest, res: any, next: () => void) => 
 // ──────────────────────────────────────────────
 // POST /api/ai/chat/stream — Chat streaming qua SSE
 // ──────────────────────────────────────────────
-router.post('/chat/stream', optionalAuth, async (req, res) => {
+router.post('/chat/stream', optionalAuth, async (req: AuthenticatedRequest, res) => {
 	const { session_id, message } = req.body as { session_id?: string; message?: string };
 
 	if (!message?.trim()) {
@@ -83,18 +83,18 @@ router.post('/chat/stream', optionalAuth, async (req, res) => {
 // GET /api/ai/history/:session_id — Lấy lịch sử hội thoại
 // ──────────────────────────────────────────────
 router.get('/history/:session_id', optionalAuth, async (req, res) => {
-	const { session_id } = req.params;
+	const sessionId = req.params.session_id as string;
 
-	if (!session_id) {
+	if (!sessionId) {
 		res.status(400).json({ success: false, message: 'Thiếu session_id' });
 		return;
 	}
 
 	try {
-		const history = await getChatHistory(session_id, 20);
+		const history = await getChatHistory(sessionId, 20);
 		res.json({
 			success: true,
-			data: { session_id, messages: history },
+			data: { sessionId, messages: history },
 		});
 	} catch (error) {
 		res.status(500).json({
@@ -249,7 +249,7 @@ router.post('/embed/query', async (req, res) => {
 
 	try {
 		const embedding = await generateEmbedding(text);
-		const chunks = await retrieveRelevantChunks(embedding, 3);
+		const chunks = await retrieveRelevantChunks(embedding, undefined, 3);
 
 		res.json({
 			success: true,
