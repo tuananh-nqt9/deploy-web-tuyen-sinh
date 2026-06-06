@@ -5,8 +5,8 @@
 
 FROM node:18-alpine AS deps
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
+COPY backend-package.json ./
+RUN npm install
 
 FROM node:18-alpine AS builder
 WORKDIR /app
@@ -23,13 +23,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/src/backend/uploads ./src/backend/uploads
 COPY --from=builder /app/src/backend/database/init.sql ./init.sql
 
-# Railway provides MYSQL* variables automatically
-# Override with your own env vars in Railway dashboard
 ENV PORT=5000
-ENV BACKEND_PORT=5000
 
 EXPOSE 5000
 
-# Run migrate once, then start server
-# The inline script waits for MySQL before migrating
-CMD sh -c 'node dist-backend/index.js'
+CMD ["node", "dist-backend/index.js"]
