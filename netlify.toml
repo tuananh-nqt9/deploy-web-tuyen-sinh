@@ -1,11 +1,31 @@
 [build]
-  command = "npm run build"
+  command = "yarn build"
   publish = "dist"
+  framework = "#custom"
 
 [build.environment]
-  NODE_VERSION = "16"
+  NODE_VERSION = "18"
+  YARN_VERSION = "1.22.22"
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+[context.production.environment]
+  REACT_APP_API_URL = "https://your-railway-backend.up.railway.app"

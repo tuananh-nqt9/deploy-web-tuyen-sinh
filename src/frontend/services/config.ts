@@ -7,7 +7,7 @@ const getApiBase = (): string => {
   if (envUrl) return envUrl;
 
   // Fallback: biến build-time của UmiJS
-  const buildUrl = (process as any).env?.UMI_APP_API_URL;
+  const buildUrl = (process as any).env?.REACT_APP_API_URL;
   if (buildUrl) return buildUrl;
 
   // Local dev

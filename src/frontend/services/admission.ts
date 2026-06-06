@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../utils/auth';
 
-const API_URL = 'http://localhost:5000/api/admission';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/admission';
 
 const createAuthorizedConfig = () => ({
 	headers: {
@@ -50,7 +50,7 @@ export const submitAdmissionApplication = (confirmationChecked: boolean) => {
 };
 
 // ── Cutoff scores ───────────────────────────────
-const CUTOFF_URL = 'http://localhost:5000/api/cutoff';
+const CUTOFF_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/cutoff`;
 
 export const getCutoffScores = (params?: { university_id?: number; year?: number; combination_id?: number }) => {
 	return axios.get(CUTOFF_URL, { params });
