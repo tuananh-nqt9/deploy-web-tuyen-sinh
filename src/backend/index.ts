@@ -15,15 +15,21 @@ dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
+const allowedOrigins = [
+	'http://localhost:8000',
+	'http://localhost:3000',
+	'http://127.0.0.1:8000',
+	'https://*.netlify.app',
+	'http://localhost:5173',
+];
+const railwayUrl = process.env.RAILWAY_PUBLIC_DOMAIN;
+if (railwayUrl) {
+	allowedOrigins.push(`https://${railwayUrl}`);
+	allowedOrigins.push(`https://${railwayUrl}.up.railway.app`);
+}
 const io = new SocketIOServer(httpServer, {
 	cors: {
-		origin: [
-			'http://localhost:8000',
-			'http://localhost:3000',
-			'http://127.0.0.1:8000',
-			'https://*.netlify.app',
-			'http://localhost:5173',
-		],
+		origin: allowedOrigins,
 		methods: ['GET', 'POST'],
 		credentials: true,
 	},
