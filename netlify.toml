@@ -28,4 +28,4 @@
   status = 200
 
 [context.production.environment]
-  REACT_APP_API_URL = ""
+  REACT_APP_API_URL = "https://deploy-web-tuyen-sinh.up.railway.app"
